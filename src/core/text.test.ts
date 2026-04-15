@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { firstMeaningfulLine, normalizeSingleLineText, truncateText } from './text'
+import {
+  extractHttpUrl,
+  firstMeaningfulLine,
+  normalizeSingleLineText,
+  truncateText,
+} from './text'
 
 describe('truncateText', () => {
   it('keeps text within the limit untouched', () => {
@@ -20,5 +25,17 @@ describe('firstMeaningfulLine', () => {
 describe('normalizeSingleLineText', () => {
   it('collapses whitespace and keeps the first line', () => {
     expect(normalizeSingleLineText('  hello   world \nsecond line')).toBe('hello world')
+  })
+})
+
+describe('extractHttpUrl', () => {
+  it('returns a normalized http or https url', () => {
+    expect(extractHttpUrl(' https://example.com/path ')).toBe('https://example.com/path')
+    expect(extractHttpUrl('http://example.com')).toBe('http://example.com/')
+  })
+
+  it('returns an empty string for non-urls', () => {
+    expect(extractHttpUrl('hello https://example.com')).toBe('')
+    expect(extractHttpUrl('mailto:test@example.com')).toBe('')
   })
 })

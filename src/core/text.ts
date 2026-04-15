@@ -40,3 +40,20 @@ export function extractHostname(value: string): string {
     return ''
   }
 }
+
+export function extractHttpUrl(value: string): string {
+  const candidate = normalizeSingleLineText(value)
+
+  if (!candidate) {
+    return ''
+  }
+
+  try {
+    const parsedUrl = new URL(candidate)
+    return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:'
+      ? parsedUrl.toString()
+      : ''
+  } catch {
+    return ''
+  }
+}

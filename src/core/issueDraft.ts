@@ -1,5 +1,6 @@
 import { MANUAL_TEMPLATE_FILE, SHARE_TEMPLATE_FILE } from './constants'
 import {
+  extractHttpUrl,
   extractHostname,
   firstMeaningfulLine,
   normalizeMultilineText,
@@ -27,11 +28,12 @@ export type IssueDraft = {
 }
 
 export function buildShareIssueDraft(input: ShareIssueInput): IssueDraft {
-  const normalized = {
+  const normalizedText = truncateText(normalizeMultilineText(input.text))
+  const normalized = normalizeShareInput({
     url: normalizeMultilineText(input.url),
     title: normalizeSingleLineText(input.title),
-    text: truncateText(normalizeMultilineText(input.text)),
-  }
+    text: normalizedText,
+  })
 
   const titleSeed =
     normalized.title ||
@@ -47,6 +49,24 @@ export function buildShareIssueDraft(input: ShareIssueInput): IssueDraft {
       shared_title: normalized.title,
       shared_text: normalized.text,
     }),
+  }
+}
+
+function normalizeShareInput(input: ShareIssueInput): ShareIssueInput {
+  if (input.url) {
+    return input
+  }
+
+  const lines = input.text.split('\n')
+  const firstLineUrl = extractHttpUrl(lines[0] ?? '')
+  if (!firstLineUrl) {
+    return input
+  }
+
+  return {
+    ...input,
+    url: firstLineUrl,
+    text: lines.slice(1).join('\n').trim(),
   }
 }
 

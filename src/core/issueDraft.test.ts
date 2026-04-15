@@ -29,6 +29,37 @@ describe('buildShareIssueDraft', () => {
       }).title,
     ).toBe('inbox: example.com')
   })
+
+  it('moves a shared url from the text field into the url field', () => {
+    expect(
+      buildShareIssueDraft({
+        url: '',
+        title: 'A shared article',
+        text: 'https://example.com/post',
+      }),
+    ).toMatchObject({
+      fields: {
+        url: 'https://example.com/post',
+        shared_title: 'A shared article',
+      },
+    })
+  })
+
+  it('keeps non-url text after extracting the first-line url', () => {
+    expect(
+      buildShareIssueDraft({
+        url: '',
+        title: 'A shared article',
+        text: 'https://example.com/post\nImportant excerpt',
+      }),
+    ).toMatchObject({
+      fields: {
+        url: 'https://example.com/post',
+        shared_title: 'A shared article',
+        shared_text: 'Important excerpt',
+      },
+    })
+  })
 })
 
 describe('buildManualIssueDraft', () => {
