@@ -12,7 +12,11 @@ export function readShareTargetPayload(
       ? new URLSearchParams(search.startsWith('?') ? search.slice(1) : search)
       : search
 
-  if (params.get('source') !== 'share') {
+  const hasShareSource = params.get('source') === 'share'
+  const hasSharePayload =
+    params.has('share_url') || params.has('share_title') || params.has('share_text')
+
+  if (!hasShareSource && !hasSharePayload) {
     return null
   }
 
