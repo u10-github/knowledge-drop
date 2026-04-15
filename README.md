@@ -1,73 +1,47 @@
-# React + TypeScript + Vite
+# Knowledge Drop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Android の共有メニューや通常起動から URL / メモを受け取り、GitHub Issue 作成画面へ流し込むための PWA です。
+GitHub API は使わず、Issue Form の URL パラメータだけで下書きを作ります。
 
-Currently, two official plugins are available:
+公開 URL:
+`https://u10-github.github.io/knowledge-drop/`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 開発
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 検証
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm run lint
+npm run test
+npm run build
+npm run test:e2e
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## GitHub Pages デプロイ
+
+この repo は `.github/workflows/deploy-pages.yml` で `dist/` を GitHub Pages に公開します。
+
+重要:
+- Pages の配信元は `GitHub Actions` を使う
+- `main /` の branch 配信にすると、未ビルドの `index.html` がそのまま公開されて白画面になる
+
+現状確認コマンド:
+
+```bash
+gh api repos/u10-github/knowledge-drop/pages
+```
+
+期待する状態:
+- `build_type: "workflow"`
+- 公開 URL が `https://u10-github.github.io/knowledge-drop/`
+
+デプロイを手動実行したいとき:
+
+```bash
+gh workflow run deploy-pages.yml --repo u10-github/knowledge-drop
 ```
