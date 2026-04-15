@@ -2,6 +2,8 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const APP_BASE_PATH = '/knowledge-drop/'
+
 export default defineConfig({
   base: './',
   plugins: [
@@ -17,8 +19,8 @@ export default defineConfig({
         theme_color: '#111827',
         background_color: '#f8fafc',
         display: 'standalone',
-        scope: './',
-        start_url: './',
+        scope: APP_BASE_PATH,
+        start_url: APP_BASE_PATH,
         icons: [
           {
             src: 'app-icon.svg',
@@ -28,7 +30,7 @@ export default defineConfig({
           },
         ],
         share_target: {
-          action: './?source=share',
+          action: `${APP_BASE_PATH}?source=share`,
           method: 'GET',
           params: {
             title: 'share_title',

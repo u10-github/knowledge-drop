@@ -149,7 +149,12 @@ function App() {
             自動送信は行わず、GitHub 画面で最終確認してから作成してください。
           </p>
           {shareTargetUrl ? (
-            <a className="button secondary-button" href={shareTargetUrl}>
+            <a
+              className="button secondary-button"
+              href={shareTargetUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
               開かない場合はこちら
             </a>
           ) : null}
