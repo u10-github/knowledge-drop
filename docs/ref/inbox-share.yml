@@ -1,0 +1,64 @@
+name: Inbox Share
+description: 共有されたURLやテキストを、そのまま投入するためのIssue
+title: "inbox: "
+labels: ["inbox"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        共有から投入された内容です。
+        必要なら内容を確認して、そのまま Issue を作成してください。
+
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: 共有元のURL
+      placeholder: https://example.com
+    validations:
+      required: false
+
+  - type: input
+    id: shared_title
+    attributes:
+      label: Title
+      description: 共有元タイトル
+      placeholder: 例) OpenTelemetryとは何か
+    validations:
+      required: false
+
+  - type: textarea
+    id: shared_text
+    attributes:
+      label: Text
+      description: 共有元から渡された本文や抜粋
+      placeholder: 共有元テキスト
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: memo
+    attributes:
+      label: メモ
+      description: 共有起動時の固定メモ
+      value: |
+        - 共有から投入
+      render: markdown
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ## AI向け処理指示
+        - 入力内容を確認する
+        - 必要ならソース痕跡を `raw/` に残す
+        - 再利用価値のある知識を `cards/` にまとめる
+        - 必要なら `index/` を更新する
+        - PR を作成し、`Closes #{issue_number}` を入れる
+
+        ## 制約
+        - ソース未取得の場合は、その旨を明記する
+        - 要約だけで元ソース痕跡を消さない
+        - 不明な点は推測で埋めない

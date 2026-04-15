@@ -1,0 +1,65 @@
+name: Inbox Manual
+description: URLや知見メモを手入力で投入するためのIssue
+title: "inbox: "
+labels: ["inbox"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        手動入力で保存するためのテンプレートです。
+        URLだけでも、メモだけでも構いません。
+
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: 保存したいURL
+      placeholder: https://example.com
+    validations:
+      required: false
+
+  - type: input
+    id: manual_title
+    attributes:
+      label: Title
+      description: 自分で付けるタイトル
+      placeholder: 例) E2Eレビュー活用の考え方
+    validations:
+      required: false
+
+  - type: textarea
+    id: manual_text
+    attributes:
+      label: Text
+      description: コピペした本文や抜粋
+      placeholder: ここに本文や抜粋を貼る
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: memo
+    attributes:
+      label: メモ
+      description: 補足や自分の評価
+      placeholder: |
+        - 何が良かったか
+        - どういう時に使いたいか
+      render: markdown
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ## AI向け処理指示
+        - 入力内容を確認する
+        - 必要ならソース痕跡を `raw/` に残す
+        - 再利用価値のある知識を `cards/` にまとめる
+        - 必要なら `index/` を更新する
+        - PR を作成し、`Closes #{issue_number}` を入れる
+
+        ## 制約
+        - ソース未取得の場合は、その旨を明記する
+        - 要約だけで元ソース痕跡を消さない
+        - 不明な点は推測で埋めない
